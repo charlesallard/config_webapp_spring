@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +36,8 @@ public class MyController {
     	return new ResponseEntity<String>("Liste des images du " + loc.format(DateTimeFormatter.ofPattern("dd MMMM yyyy")) + " trié par " + sort, HttpStatus.OK);
     }
     
-    
-    @GetMapping
-    public String setupForm(@PathVariable("petId") int petId) {
-		return null;    	
+    @GetMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> users(){
+    	return new ResponseEntity<String>("{\"id\":0, \"firstname\":null, \"lastname\":null, \"email\":null, \"password\":null }", HttpStatus.OK);
     }
 }
