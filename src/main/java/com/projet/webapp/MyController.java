@@ -4,7 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,6 +50,21 @@ public class MyController {
     public List<User> users(){
     	System.out.println("LISTUSER");
     	return userdao.getListUsers();
+    }
+    
+    @PostMapping(value="user", consumes= MediaType.APPLICATION_JSON_VALUE)
+    public void addUser(@RequestBody User user) {
+    	userdao.addUser(user);
+    }
+    
+    @DeleteMapping(value="user/{id}")
+    public void delUser(@PathVariable("id") int id) {
+    	userdao.deleteUser(id);
+    }
+    
+    @PutMapping(value="usermodif/{id}", consumes= MediaType.APPLICATION_JSON_VALUE)
+    public void changeUser(@PathVariable("id") int id, @RequestBody User user) {
+    	userdao.updateUser(user, id);
     }
     
     
