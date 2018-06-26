@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,7 @@ import com.projet.bdd.*;
 
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/users")
 public class MyController {
 	@Autowired
 	private UserDAO userdao;
@@ -45,24 +47,24 @@ public class MyController {
     public ResponseEntity<String> usersjson(){
     	return new ResponseEntity<String>("{\"id\":0, \"firstname\":null, \"lastname\":null, \"email\":null, \"password\":null }", HttpStatus.OK);
     }*/
-    
-    @GetMapping(value = "users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('READ')")
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> users(){
     	System.out.println("LISTUSER");
     	return userdao.getListUsers();
     }
-    
-    @PostMapping(value="user", consumes= MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('WRITE')")
+    @PostMapping(value="/", consumes= MediaType.APPLICATION_JSON_VALUE)
     public void addUser(@RequestBody User user) {
     	userdao.addUser(user);
     }
-    
-    @DeleteMapping(value="user/{id}")
+    @PreAuthorize("hasAuthority('WRITE')")
+    @DeleteMapping(value="/{id}")
     public void delUser(@PathVariable("id") int id) {
     	userdao.deleteUser(id);
     }
-    
-    @PutMapping(value="usermodif/{id}", consumes= MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('WRITE')")
+    @PutMapping(value="/{id}", consumes= MediaType.APPLICATION_JSON_VALUE)
     public void changeUser(@PathVariable("id") int id, @RequestBody User user) {
     	userdao.updateUser(user, id);
     }

@@ -2,6 +2,7 @@ package com.projet.bdd;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.sql.DataSource;
 
@@ -58,5 +59,9 @@ public class UserDAO {
 		addUser(u1);
 		addUser(u2);
 		addUser(u3);
+	}
+	
+	public Optional<User> findOneByLogin(String email) {
+		return Optional.ofNullable(this.jdbcTemplate.query("SELECT * FROM Users WHERE email = ?", new UserMapper(), email).get(0));
 	}	
 }
